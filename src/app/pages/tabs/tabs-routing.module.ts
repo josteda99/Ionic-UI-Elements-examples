@@ -1,0 +1,41 @@
+import { InfinitePage } from './../infinite/infinite.page';
+import { AvatarPageModule } from './../avatar/avatar.module';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { TabsPage } from './tabs.page';
+
+const routes: Routes = [
+  { path: '', redirectTo: '/tabs/account', pathMatch: 'full' },
+  {
+    path: '',
+    component: TabsPage,
+    children: [
+      {
+        path: 'account',
+        loadChildren: () =>
+          import('../avatar/avatar.module').then((m) => m.AvatarPageModule),
+      },
+      {
+        path: 'contact',
+        loadChildren: () =>
+          import('../infinite/infinite.module').then(
+            (m) => m.InfinitePageModule
+          ),
+      },
+      {
+        path: 'setting',
+        loadChildren: () =>
+          import('../progress/progress.module').then(
+            (m) => m.ProgressPageModule
+          ),
+      },
+    ],
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class TabsPageRoutingModule {}
